@@ -1,12 +1,13 @@
 require('dotenv').config()
 var cors = require('cors')
+var amazon = require('./api/controllers/amazonController')
 
 
 var express = require('express'),
     app = express(),
     port = process.env.PORT || 3001,
     mongoose = require('mongoose'),
-    Plant = require('./api/models/plantModel'), //created model loading here
+    Product = require('./api/models/productModel'), //created model loading here
     bodyParser = require('body-parser');
 
 mongoose.Promise = global.Promise;
@@ -28,3 +29,5 @@ routes(app);
 
 app.listen(port);
 console.log('track4Deals RESTful API server started on: ' + port);
+
+// fare working thread chce faccia il refresh del database per le offerte

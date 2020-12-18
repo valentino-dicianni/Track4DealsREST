@@ -1,14 +1,15 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-    Plant = mongoose.model('Plants');
+    Product = mongoose.model('Product');
 
 
 exports.get_all_offers = (req, res) => {
-    if (err)
-        res.send(err);
-    res.json({ "ok": "true" });
-
+    Product.find({}, (err, products) => {
+        if (err)
+            res.send(err);
+        res.json(products);
+    });
 };
 
 exports.get_tracking_offers = (req, res) => {

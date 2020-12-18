@@ -16,6 +16,4 @@ module.exports = function (app) {
 
     app.route('/profile/modify_profile')
         .post(controller.modify_profile);
-
-
 }
