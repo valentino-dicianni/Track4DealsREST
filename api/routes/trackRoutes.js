@@ -1,6 +1,8 @@
 'use strict';
 module.exports = function (app) {
     var controller = require('../controllers/trackController');
+    var amazon = require('../controllers/amazonController');
+
     var auth = require('../auth/authenticated');
 
     app.route('/offers/get-offers')
@@ -10,7 +12,7 @@ module.exports = function (app) {
         .get(auth.isAuthenticated, controller.get_tracking_offers);
 
     app.route('/tracking/verify/:productID')
-        .post(auth.isAuthenticated, controller.verify_product);
+        .post(auth.isAuthenticated, amazon.verify_product);
 
     app.route('/tracking/add-tracking')
         .post(auth.isAuthenticated, controller.add_tracking_product);
