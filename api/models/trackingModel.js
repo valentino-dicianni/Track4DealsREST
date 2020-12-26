@@ -1,6 +1,5 @@
 'use strict';
 var mongoose = require('mongoose');
-const productModel = require('./productModel');
 var Schema = mongoose.Schema;
 
 

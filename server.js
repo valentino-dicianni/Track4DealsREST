@@ -16,6 +16,7 @@ var express = require('express'),
     mongoose = require('mongoose'),
     Product = require('./api/models/productModel'), //created model loading here
     Tracking = require('./api/models/trackingModel'), //created model loading here
+    UserInfo = require('./api/models/userInfoModel'), //created model loading here
     bodyParser = require('body-parser');
 
 mongoose.Promise = global.Promise;

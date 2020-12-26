@@ -18,7 +18,6 @@ exports.isAuthenticated = async (req, res, next) => {
     try {
         const decodedToken = await admin.auth().verifyIdToken(token);
         console.log("DecodedToken", JSON.stringify(decodedToken))
-        res.locals = { ...res.locals, uid: decodedToken.uid, role: decodedToken.role, email: decodedToken.email }
         return next();
     }
     catch (err) {

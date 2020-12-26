@@ -4,8 +4,8 @@ var defaultAuth = admin.auth();
 
 var mongoose = require('mongoose'),
     Product = mongoose.model('Product'),
-    Tracking = mongoose.model('Tracking');
-
+    Tracking = mongoose.model('Tracking'),
+    UserInfo = mongoose.model('UserInfo');
 
 exports.get_all_offers = (req, res) => {
     Product.find({}, (err, products) => {
@@ -15,38 +15,78 @@ exports.get_all_offers = (req, res) => {
     });
 };
 
-exports.get_tracking_offers = (req, res) => {
-    if (err)
-        res.send(err);
-    res.json({ "ok": "true" });
-
-};
-
-
-exports.add_tracking_product = (req, res) => {
-    if (err)
-        res.send(err);
-    res.json({ "ok": "true" });
-
-};
-
-exports.modify_profile = (req, res) => {
-    if (err)
-        res.send(err);
-    res.json({ "ok": "true" });
-
-};
-
-exports.enable_notifications = async (req, res) => {
-    const token = req.headers.split('Bearer ')[1];
+exports.get_tracking_offers = async (req, res) => {
+    const { authorization } = req.headers
+    const token = authorization.split('Bearer ')[1];
     const decodedToken = await defaultAuth.verifyIdToken(token);
     let uid = decodedToken.uid;
 
-    Tracking.update({ 'user_id': uid }, { $set: { 'firebaseToken': req.body.firebaseToken } }, () => {
-        if (err)
-            res.send(err);
-        res.json({ "ok": "true" });
-    });
+    Tracking.find(
+        { 'user_id': uid },
+        { tracking_list: 1 },
+        (err, list) => {
+            if (err)
+                res.send(err);
+            res.json(list);
+        }
+    );
+};
+
+// TODO: N.B. qui si presuppone che esista la entry, accertarsene
+exports.add_tracking_product = async (req, res) => {
+    const { authorization } = req.headers
+    const token = authorization.split('Bearer ')[1];
+    const decodedToken = await defaultAuth.verifyIdToken(token);
+    let uid = decodedToken.uid;
+
+    Tracking.update(
+        { 'user_id': uid },
+        { $push: { tracking_list: req.product } },
+        (err, list) => {
+            if (err)
+                res.send(err);
+            res.json(list);
+        }
+    );
+};
+
+exports.modify_profile = async (req, res) => {
+    const { authorization } = req.headers
+    const token = authorization.split('Bearer ')[1];
+    const decodedToken = await defaultAuth.verifyIdToken(token);
+    let uid = decodedToken.uid;
+
+    let newProfile = {
+        user_id: uid,
+        profilePhoto: req.body.profilePhoto,
+        category_list: req.body.category_list
+    };
+
+    Tracking.update({ 'user_id': uid },
+        newProfile,
+        { upsert: true },
+        (err, res) => {
+            if (err)
+                res.send(err);
+            res.json({ 'response': res });
+        }
+    );
+};
+
+exports.enable_notifications = async (req, res) => {
+    const { authorization } = req.headers
+    const token = authorization.split('Bearer ')[1];
+    const decodedToken = await defaultAuth.verifyIdToken(token);
+    let uid = decodedToken.uid;
+
+    Tracking.update({ 'user_id': uid },
+        { $set: { 'firebaseToken': req.body.firebaseToken } },
+        { upsert: true }, (err, res) => {
+            if (err)
+                res.send(err);
+            res.json({ "response": res });
+        }
+    );
 };
 
 exports.add_account = async (req, res) => {
@@ -66,6 +106,5 @@ exports.add_account = async (req, res) => {
         console.log(`ERROR: ${err.code} - ${err.message}`);
         res.status(500).send({ registration: "error", message: `${err.code} - ${err.message}` });
     }
-
 };
 
