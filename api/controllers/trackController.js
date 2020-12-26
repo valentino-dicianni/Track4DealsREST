@@ -62,7 +62,7 @@ exports.modify_profile = async (req, res) => {
         category_list: req.body.category_list
     };
 
-    Tracking.update({ 'user_id': uid },
+    UserInfo.update({ 'user_id': uid },
         newProfile,
         { upsert: true },
         (err, res) => {
