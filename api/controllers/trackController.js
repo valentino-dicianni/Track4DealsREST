@@ -33,7 +33,6 @@ exports.get_tracking_offers = async (req, res) => {
 };
 
 // TODO: N.B. qui si presuppone che esista la entry, accertarsene
-// TODO: controllare che il prodotto aggiunto non sia tracciato in Products, e aggiungerlo nel caso
 exports.add_tracking_product = async (req, res) => {
     const { authorization } = req.headers
     const token = authorization.split('Bearer ')[1];
@@ -49,6 +48,8 @@ exports.add_tracking_product = async (req, res) => {
             res.json(list);
         }
     );
+    // Upsert in product se non esiste
+    Product.update({'ASIN': req.product.ASIN}, req.product, { upsert: true });
 };
 
 exports.modify_profile = async (req, res) => {
