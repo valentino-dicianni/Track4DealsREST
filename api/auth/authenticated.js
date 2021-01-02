@@ -2,7 +2,6 @@ var admin = require("firebase-admin");
 
 exports.isAuthenticated = async (req, res, next) => {
     const { authorization } = req.headers
-    console.log(authorization);
     if (!authorization)
         return res.status(401).send({ message: 'Unauthorized' });
 
@@ -17,7 +16,7 @@ exports.isAuthenticated = async (req, res, next) => {
 
     try {
         const decodedToken = await admin.auth().verifyIdToken(token);
-        console.log("DecodedToken", JSON.stringify(decodedToken))
+        console.log("Decoded request from user:", decodedToken.uid)
         return next();
     }
     catch (err) {

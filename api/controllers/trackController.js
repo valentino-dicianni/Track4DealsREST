@@ -9,8 +9,11 @@ var mongoose = require('mongoose'),
 
 exports.get_all_offers = (req, res) => {
     Product.find({}, (err, products) => {
-        if (err)
+        if (err) {
+            console.log(`ERROR GET/allOffers: ${err.code} - ${err.message}`);
             res.send(err);
+        }
+        console.log(`GET/allOffers: found ${products.length} products`);
         res.json(products);
     });
 };
@@ -25,8 +28,11 @@ exports.get_tracking_offers = async (req, res) => {
         { 'user_id': uid },
         { tracking_list: 1 },
         (err, list) => {
-            if (err)
+            if (err) {
+                console.log(`ERROR GET/trackingOffers: ${err.code} - ${err.message}`);
                 res.send(err);
+            }
+            console.log(`GET/trackingOffers: found ${list.length} products`);
             res.json(list);
         }
     );
@@ -39,17 +45,33 @@ exports.add_tracking_product = async (req, res) => {
     const decodedToken = await defaultAuth.verifyIdToken(token);
     let uid = decodedToken.uid;
 
-    Tracking.update(
-        { 'user_id': uid },
-        { $push: { tracking_list: req.product } },
-        (err, list) => {
-            if (err)
-                res.send(err);
-            res.json(list);
+    // Upsert in product se non esiste
+    Product.updateOne(
+        { 'ASIN': req.body.ASIN },
+        req.body,
+        { upsert: true },
+        (err, response) => {
+            if (err) {
+                console.log(`ERROR POST/addTrackingProduct: ${err.code} - ${err.message}`);
+            }
+            console.log(`POST/addTrackingProduct: product collection updated`);
         }
     );
-    // Upsert in product se non esiste
-    Product.update({'ASIN': req.product.ASIN}, req.product, { upsert: true });
+    
+    Tracking.updateOne(
+        { 'user_id': uid },
+        { $push: { tracking_list: req.body } },
+        (err, response) => {
+            if (err) {
+                console.log(`ERROR: ${err.code} - ${err.message}`);
+                res.send(err);
+            }
+            console.log(`POST/addTrackingProduct: updated ${response.nModified} product`);
+            res.json(response);
+        }
+    );
+
+
 };
 
 exports.modify_profile = async (req, res) => {
@@ -67,10 +89,13 @@ exports.modify_profile = async (req, res) => {
     UserInfo.update({ 'user_id': uid },
         newProfile,
         { upsert: true },
-        (err, res) => {
-            if (err)
+        (err, response) => {
+            if (err){
+                console.log(`ERROR POST/modifyProfile: ${err.code} - ${err.message}`);
                 res.send(err);
-            res.json({ 'response': res });
+            }
+            console.log(`POST/modifyProfile: ${response.nModified} profile updated`);
+            res.json(response);
         }
     );
 };
@@ -81,12 +106,15 @@ exports.enable_notifications = async (req, res) => {
     const decodedToken = await defaultAuth.verifyIdToken(token);
     let uid = decodedToken.uid;
 
-    Tracking.update({ 'user_id': uid },
-        { $set: { 'firebaseToken': req.body.firebaseToken } },
-        { upsert: true }, (err, res) => {
-            if (err)
+    Tracking.updateOne({ 'user_id': uid },
+        { $set: { 'firebaseToken': req.body.firebaseToken } }, 
+        (err, response) => {
+            if (err){
+                console.log(`ERROR POST/enableNotification: ${err.code} - ${err.message}`);
                 res.send(err);
-            res.json({ "response": res });
+            }
+            console.log(`POST/enableNotification: ${response.nModified} notification setting modified`);
+            res.json(response);
         }
     );
 };
@@ -103,10 +131,32 @@ exports.add_account = async (req, res) => {
             password: password,
             displayName: displayName
         });
+        Tracking.insertOne(
+            {'user_id':uid, 'firebaseToken':"", 'tracking_list':[]},
+            (err, response) => {
+                if (err){
+                    console.log(`ERROR POST/addAccount: ${err.code} - ${err.message}`);
+                    res.send(err);
+                }
+                console.log(`POST/addAccount: tracking collection user added`);
+            }
+        );
+        UserInfo.insertOne(
+            {'user_id':uid, 'profilePhoto':"", 'category_list':[]},
+            (err, response) => {
+                if (err){
+                    console.log(`ERROR POST/addAccount: ${err.code} - ${err.message}`);
+                    res.send(err);
+                }
+                console.log(`POST/addAccount: userInfo collection user added`);
+            })
+
         res.status(201).send({ registration: "ok", uid: uid })
     } catch (err) {
-        console.log(`ERROR: ${err.code} - ${err.message}`);
+        console.log(`ERROR POST/addAccount: ${err.code} - ${err.message}`);
         res.status(500).send({ registration: "error", message: `${err.code} - ${err.message}` });
     }
+
+
 };
 

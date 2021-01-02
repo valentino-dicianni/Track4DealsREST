@@ -8,7 +8,7 @@ module.exports = function (app) {
     app.route('/offers/get-offers')
         .get(controller.get_all_offers)
 
-    app.route('/traking/get-offers')
+    app.route('/tracking/get-offers')
         .get(auth.isAuthenticated, controller.get_tracking_offers);
 
     app.route('/tracking/verify/:productID')

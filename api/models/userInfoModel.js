@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var UserInfoSchema = new Schema({
-    user_id: Number, 
+    user_id: String, 
     profilePhoto : String,
     category_list : [String]
 });

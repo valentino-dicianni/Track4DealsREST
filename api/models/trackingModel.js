@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 
 
 var TrackingSchema = new Schema({
-    user_id: Number, 
+    user_id: String, 
     firebaseToken: String,
     tracking_list : [{
         ASIN: String, 
