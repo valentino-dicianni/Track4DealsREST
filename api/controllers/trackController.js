@@ -131,8 +131,8 @@ exports.add_account = async (req, res) => {
             password: password,
             displayName: displayName
         });
-        Tracking.insertOne(
-            {'user_id':uid, 'firebaseToken':"", 'tracking_list':[]},
+        let newTrack = new Tracking({'user_id':uid, 'firebaseToken':"", 'tracking_list':[]})
+        newTrack.save(
             (err, response) => {
                 if (err){
                     console.log(`ERROR POST/addAccount: ${err.code} - ${err.message}`);
@@ -141,8 +141,8 @@ exports.add_account = async (req, res) => {
                 console.log(`POST/addAccount: tracking collection user added`);
             }
         );
-        UserInfo.insertOne(
-            {'user_id':uid, 'profilePhoto':"", 'category_list':[]},
+        let newUser = new UserInfo({'user_id':uid, 'profilePhoto':"", 'category_list':[]});
+        newUser.save(
             (err, response) => {
                 if (err){
                     console.log(`ERROR POST/addAccount: ${err.code} - ${err.message}`);
