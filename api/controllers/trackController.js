@@ -151,7 +151,7 @@ exports.add_account = async (req, res) => {
                 console.log(`POST/addAccount: userInfo collection user added`);
             })
 
-        res.status(201).send({ registration: "ok", uid: uid })
+        res.status(201).send({'user_id':uid, 'profilePhoto':"", 'category_list':[]});
     } catch (err) {
         console.log(`ERROR POST/addAccount: ${err.code} - ${err.message}`);
         res.status(500).send({ registration: "error", message: `${err.code} - ${err.message}` });
