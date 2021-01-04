@@ -4,7 +4,8 @@
   "description": "REST api for Track4Deals",
   "main": "index.js",
   "scripts": {
-    "test": "run"
+    "test": "run",
+    "start": "node server.js"
   },
   "author": "Valentino Di Cianni",
   "license": "ISC",
