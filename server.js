@@ -48,8 +48,10 @@ mongoose.connect(process.env.MONGODB_CONNECTION_STRING, { useUnifiedTopology: tr
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
 app.use(cors({ origin: true }));
+app.set('views', __dirname + '\\api\\views');
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
 
 
 var routes = require('./api/routes/trackRoutes');

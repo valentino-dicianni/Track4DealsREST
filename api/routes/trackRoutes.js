@@ -5,6 +5,9 @@ module.exports = function (app) {
 
     var auth = require('../auth/authenticated');
 
+    app.route('/')
+        .get(controller.about_page)
+
     app.route('/offers/get_offers')
         .get(controller.get_all_offers)
 

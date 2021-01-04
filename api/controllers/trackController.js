@@ -7,6 +7,10 @@ var mongoose = require('mongoose'),
     Tracking = mongoose.model('Tracking'),
     UserInfo = mongoose.model('UserInfo');
 
+exports.about_page = (req, res) =>{
+    res.render('index.html');
+};
+
 exports.get_all_offers = (req, res) => {
     Product.find({}, (err, products) => {
         if (err) {
