@@ -5,20 +5,20 @@ module.exports = function (app) {
 
     var auth = require('../auth/authenticated');
 
-    app.route('/offers/get-offers')
+    app.route('/offers/get_offers')
         .get(controller.get_all_offers)
 
-    app.route('/tracking/get-offers')
+    app.route('/tracking/get_offers')
         .get(auth.isAuthenticated, controller.get_tracking_offers);
 
     app.route('/tracking/verify/:productID')
         .post(auth.isAuthenticated, amazon.verify_product);
 
-    app.route('/tracking/add-tracking')
+    app.route('/tracking/add_tracking')
         .post(auth.isAuthenticated, controller.add_tracking_product);
 
     app.route('/tracking/enable_notifications')
-        .get(controller.add_account);
+        .get(controller.enable_notifications);
 
     app.route('/profile/modify_profile')
         .post(auth.isAuthenticated, controller.modify_profile);
