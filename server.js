@@ -20,7 +20,7 @@ var express = require('express'),
     bodyParser = require('body-parser');
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/test', { useUnifiedTopology: true, useNewUrlParser: true })
+mongoose.connect(process.env.MONGODB_CONNECTION_STRING, { useUnifiedTopology: true, useNewUrlParser: true })
     .then(
         () => { console.log('Connected to DB') },
         err => { console.log('ERROR connecting to db: ' + err) }
