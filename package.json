@@ -1,7 +1,7 @@
 {
-  "name": "plantinfoapi",
+  "name": "track4deals",
   "version": "1.0.0",
-  "description": "REST api for plant informations",
+  "description": "REST api for Track4Deals",
   "main": "index.js",
   "scripts": {
     "test": "run"
