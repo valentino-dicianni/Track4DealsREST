@@ -5,11 +5,30 @@ require('log-timestamp');
 var admin = require("firebase-admin");
 
 // Initialize Firebase
+/*
 var serviceAccount = require("./track4deals-firebase-adminsdk-h07o4-64eee604e3.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
+*/
+
+admin.initializeApp({
+  credential: admin.credential.cert({
+    "type": process.env.FIREBASE_TYPE,
+    "project_id": process.env.FIREBASE_PROJECT_ID,
+    "private_key_id": process.env.FIREBASE_PRIVATE_KEY_ID,
+    "private_key": process.env.FIREBASE_PRIVATE_KEY,
+    "client_email": process.env.FIREBASE_CLIENT_EMAIL,
+    "client_id": process.env.FIREBASE_CLIENT_ID,
+    "auth_uri": process.env.FIREBASE_AUTH_URI,
+    "token_uri": process.env.FIREBASE_TOKEN_URI,
+    "auth_provider_x509_cert_url": process.env.FIREBASE_AUTH_PROVIDER_X509_CERT_URL,
+    "client_x509_cert_url": process.env.FIREBASE_CLIENT_X509_CERT_URL
+  }),
+  //databaseURL: "https://my-firebase-app.firebaseio.com"
+});
+
 var express = require('express'),
     app = express(),
     port = process.env.PORT || 3001,
