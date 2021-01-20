@@ -643,20 +643,21 @@
                 <li><a href="#benefits" class=" ">Benefits</a></li>
                 <li><a href="#features" class=" ">Features</a></li>
                 <li><a href="#license" class=" ">License</a></li>
-                <li class="separator"></li>
-                <li><strong>Customizing Opineo</strong></li>
-                <li><a href="#view_type" class=" ">View Type</a></li>
-                <li><a href="#animation_style" class=" ">Animation Styles</a></li>
-                <li><a href="#bars_text" class=" ">Bars Text</a></li>
-                <li><a href="#vote_counter" class=" ">Vote Counter</a></li>
-                <li><a href="#rating_icons" class=" ">Rating Icons</a></li>
-                <li><a href="#rating_titles" class=" ">Rating Titles</a></li>
-                <li><a href="#bar_colors" class=" ">Bar Colors</a></li>
             </ul>
             <div class="docs-content">
                 <h2> Getting Started</h2>
-                <h3 id="welcome"> Welcome</h3>
-                <p></p>
+                <h3 id="welcome"> How to Install</h3>
+                <p>NodeJS required for installation.
+                Just run for dependencies: 
+                <pre class="prettyprint">
+                    node install
+                </pre>
+                After that, just start the server with:
+                <pre class="prettyprint">
+                    node start
+                </pre>
+                Now you are good to go, just query the newly created server.
+                </p>
                 
                 
                 <h3 id="benefits"> Benefits</h3>
@@ -685,131 +686,6 @@
                 <pre class="prettyprint">
 
                 </pre>
-
-                <h3 id="animation_style"> Animation Style</h3>
-                <ul>
-                    <li>Slow</li>
-                </ul>
-                <pre class="prettyprint">&lt;script&gt;
-    $(document).ready(function (){
-    $('#opineo').opineo('results.php', {curvalue:0, view: 'mini', animation_speed:'slow'});
-    })	
-&lt;/script&gt; </pre>
-                <ul>
-                    <li>Medium</li>
-                </ul>
-                <pre class="prettyprint">&lt;script&gt;
-    $(document).ready(function (){
-    $('#opineo').opineo('results.php', {curvalue:0, view: 'mini', animation_speed:'mild'});
-    })	
-&lt;/script&gt; </pre>
-                <ul>
-                    <li>Fast</li>
-                </ul>
-                <pre class="prettyprint">&lt;script&gt;
-    $(document).ready(function (){
-    $('#opineo').opineo('results.php', {curvalue:0, view: 'mini', animation_speed:'fast'});
-    })	
- &lt;/script&gt;</pre>
-                <ul>
-                    <li>Super Fast</li>
-                </ul>
-                <pre class="prettyprint">&lt;script&gt;
-    $(document).ready(function (){
-    $('#opineo').opineo('results.php', {curvalue:0, view: 'mini', animation_speed:'super'});
-    })	
-&lt;/script&gt;</pre>
-                <ul>
-                    <li>Ultra Fast</li>
-                </ul>
-                <pre class="prettyprint"> &lt;script&gt;
-    $(document).ready(function (){
-    $('#opineo').opineo('results.php', {curvalue:0, view: 'mini', animation_speed:'ultra fast'});
-    })	
-&lt;/script&gt; </pre>
-                <h3 id="bars_text"> Bars Text</h3>
-                <ul>
-                    <li>Show</li>
-                </ul>
-                <pre class="prettyprint">&lt;script&gt;
-    $(document).ready(function (){
-    $('#opineo').opineo('results.php', {curvalue:0, view: 'mini', votes_label:true});
-    })	
-&lt;/script&gt;</pre>
-                <ul>
-                    <li>Hide</li>
-                </ul>
-                <pre class="prettyprint">&lt;script&gt;
-    $(document).ready(function (){
-    $('#opineo').opineo('results.php', {curvalue:0, view: 'mini', votes_label:false});
-    })	
- &lt;/script&gt;</pre>
-                <h3 id="vote_counter"> Vote Counter</h3>
-                <ul>
-                    <li>Show</li>
-                </ul>
-                <pre class="prettyprint">&lt;script&gt;
-    $(document).ready(function (){
-    $('#opineo').opineo('results.php', {curvalue:0, view: 'mini', show_votes_counter:true});
-    })	
-&lt;/script&gt; </pre>
-                <ul>
-                    <li>Hide</li>
-                </ul>
-                <pre class="prettyprint">&lt;script&gt;
-    $(document).ready(function (){
-    $('#opineo').opineo('results.php', {curvalue:0, view: 'mini', votes_label:false});
-    })	
-&lt;/script&gt;</pre>
-                <h3 id="rating_icons"> Rating Icons</h3>
-                <ul>
-                    <li>Colored</li>
-                    <li>Grey</li>
-                </ul>
-                <h3 id="rating_titles"> Rating Titles</h3>
-                <ul>
-                    <li>Text For First Star</li>
-                </ul>
-                <pre class="prettyprint">&lt;script&gt;
-    $(document).ready(function (){
-    $('#opineo').opineo('results.php', {curvalue:0, view: 'mini', star_1_text:'Hate It'});
-    })	
-&lt;/script&gt;</pre>
-                <ul>
-                    <li>Text For Second Star</li>
-                </ul>
-                <pre class="prettyprint">&lt;script&gt;
-    $(document).ready(function (){
-    $('#opineo').opineo('results.php', {curvalue:0, view: 'mini', star_2_text:'Don't Like It'});
-    })	
-&lt;/script&gt; </pre>
-                <ul>
-                    <li>Text For Third Star</li>
-                </ul>
-                <pre class="prettyprint">&lt;script&gt;
-    $(document).ready(function (){
-    $('#opineo').opineo('results.php', {curvalue:0, view: 'mini', star_1_text:'Its OK'});
-    })	
-&lt;/script&gt;</pre>
-                <ul>
-                    <li>Text For Fourth Star</li>
-                </ul>
-                <pre class="prettyprint">&lt;script&gt;
-    $(document).ready(function (){
-    $('#opineo').opineo('results.php', {curvalue:0, view: 'mini', star_1_text:'Like It'});
-    })	
-&lt;/script&gt;</pre>
-                <ul>
-                    <li>Text For Fifth Star</li>
-                </ul>
-                <pre class="prettyprint">&lt;script&gt;
-    $(document).ready(function (){
-    $('#opineo').opineo('results.php', {curvalue:0, view: 'mini', star_1_text:'Love It'});
-    })	
-&lt;/script&gt;</pre>
-
-            </div>
-        </div>
     </section>
     <section class="vibrant centered">
         <div class="container">
