@@ -37,13 +37,11 @@ exports.get_tracking_offers = async (req, res) => {
                 res.send({ok: "-1", err: err.message, response: []});
             }
             console.log(`GET/trackingOffers: found ${list.length} products`);
-            console.log(list)
             res.json({ok: "1", err: "no err", response: list[0].tracking_list});
         }
     );
 };
 
-// TODO: N.B. qui si presuppone che esista la entry, accertarsene
 exports.add_tracking_product = async (req, res) => {
     const { authorization } = req.headers
     const token = authorization.split('Bearer ')[1];
@@ -72,9 +70,33 @@ exports.add_tracking_product = async (req, res) => {
                 console.log(`ERROR: ${err.code} - ${err.message}`);
                 res.send({ok: "-1", err: err.message, response: []});
             }
-            console.log(`POST/addTrackingProduct: updated ${response.nModified} product`);
-            res.json({ok: "1", err: "no err", response: []});
+            else{
+                console.log(`POST/addTrackingProduct: updated ${response.nModified} product`);
+                res.json({ok: "1", err: "no err", response: [req.body]});
+            }
         }
+    );
+};
+
+exports.remove_tracking_product = async (req, res) => {
+    const { authorization } = req.headers
+    const token = authorization.split('Bearer ')[1];
+    const decodedToken = await defaultAuth.verifyIdToken(token);
+    let uid = decodedToken.uid;
+
+    Tracking.updateOne(
+        { 'user_id': uid },
+        { $pull: { tracking_list: req.body } },
+        (err, response) => {
+            if (err) {
+                console.log(`ERROR: ${err.code} - ${err.message}`);
+                res.send({ok: "-1", err: err.message, response: []});
+            }
+            else{
+                console.log(`POST/removeTrackingProduct: updated ${response.nModified} product`);
+                res.json({ok: "1", err: "no err", response: [req.body]});
+            }
+        }   
     );
 };
 
@@ -99,7 +121,7 @@ exports.modify_profile = async (req, res) => {
                 res.send({ok: "-1", err: err.message, response: []});
             }
             console.log(`POST/modifyProfile: ${response.nModified} profile updated`);
-            res.json({ok: "1", err: "no err", response: []});
+            res.json({ok: uid, err: "no err", response: []});
         }
     );
 };
@@ -190,5 +212,5 @@ exports.add_google_account = async (req, res) => {
             console.log(`POST/addAccount: userInfo collection user added`);
         })
 
-    res.status(201).send({ok: "-1", err: err.message, response: []});
+    res.status(201).send({ok: uid, err: "no err", response: []});
 };
