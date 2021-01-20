@@ -14,7 +14,7 @@ module.exports = function (app) {
     .get(auth.isAuthenticated, controller.get_tracking_offers);
 
   app
-    .route("/tracking/verify/:productID")
+    .route("/tracking/verify/:productASIN")
     .post(auth.isAuthenticated, amazon.verify_product);
 
   app
