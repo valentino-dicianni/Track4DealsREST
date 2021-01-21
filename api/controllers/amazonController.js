@@ -28,7 +28,7 @@ exports.verify_product = async (req, res) => {
     console.log(e);
   });
   if (amazonRes != undefined) {
-    productInfo = amazonRes.data.ItemsResult.Items[0];
+    let productInfo = amazonRes.data.ItemsResult.Items[0];
     res.json({ ok: "1", err: "no err", response: [productInfo] });
   }
 
