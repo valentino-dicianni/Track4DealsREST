@@ -23,7 +23,7 @@ myConfig.region = 'eu-west-1'; // Italy
 const api = new Api(myConfig)
 
 exports.verify_product = async (req, res) => {
-  let amazonRes = await getProductFromAmazon(req.params.productASIN).catch(e => {
+  let amazonRes = await getProductFromAmazon(req.body.productASIN).catch(e => {
     res.send({ ok: "-1", err: err.message, response: [] });
     console.log(e);
   });
