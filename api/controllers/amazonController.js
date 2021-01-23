@@ -34,35 +34,39 @@ exports.verify_product = async (req, res) => {
     let nor_price;
     let off_price;
     let disc_perc;
-    let deal; 
-    if(productInfo.Offers.Listings[0].Price.Savings != undefined) {
-      nor_price = productInfo.Offers.Listings[0].Price.Amount + productInfo.Offers.Listings[0].Price.Savings.Amount;
-      off_price = productInfo.Offers.Listings[0].Price.Amount;
-      disc_perc = productInfo.Offers.Listings[0].Price.Savings.Percentage;
-      deal = true;
+    let deal;
+    if (productInfo.Offers != undefined) {
+      if (productInfo.Offers.Listings[0].Price.Savings != undefined) {
+        nor_price = productInfo.Offers.Listings[0].Price.Amount + productInfo.Offers.Listings[0].Price.Savings.Amount;
+        off_price = productInfo.Offers.Listings[0].Price.Amount;
+        disc_perc = productInfo.Offers.Listings[0].Price.Savings.Percentage;
+        deal = true;
+      }
+      else {
+        nor_price = productInfo.Offers.Listings[0].Price.Amount;
+        off_price = productInfo.Offers.Listings[0].Price.Amount;
+        disc_perc = 0;
+        deal = false;
+      }
+      let proudctRes = {
+        ASIN: productInfo.ASIN,
+        product_url: productInfo.DetailPageURL,
+        title: productInfo.ItemInfo.Title.DisplayValue,
+        brand: productInfo.ItemInfo.ByLineInfo.Brand.DisplayValue,
+        category: productInfo.ItemInfo.Classifications.Binding.DisplayValue,
+        description: productInfo.ItemInfo.Features.DisplayValues[0],
+        normal_price: nor_price,
+        offer_price: off_price,
+        discount_perc: disc_perc,
+        imageUrl_large: productInfo.Images.Primary.Large.URL,
+        imageUrl_medium: productInfo.Images.Primary.Medium.URL,
+        isDeal: deal
+      }
+      res.json({ ok: "1", err: "no err", response: [proudctRes] });
     }
-    else {
-      nor_price = productInfo.Offers.Listings[0].Price.Amount;
-      off_price = productInfo.Offers.Listings[0].Price.Amount;
-      disc_perc = 0;
-      deal = false;
+    else{
+      res.send({ok: "-1", err: "No data available for that product", response: []});
     }
-    let proudctRes = {
-      ASIN: productInfo.ASIN, 
-      product_url: productInfo.DetailPageURL, 
-      title: productInfo.ItemInfo.Title.DisplayValue,
-      brand: productInfo.ItemInfo.ByLineInfo.Brand.DisplayValue,
-      category: productInfo.ItemInfo.Classifications.Binding.DisplayValue, 
-      description: productInfo.ItemInfo.Features.DisplayValues[0],    
-      normal_price: nor_price,
-      offer_price: off_price,
-      discount_perc: disc_perc,
-      imageUrl_large: productInfo.Images.Primary.Large.URL,
-      imageUrl_medium: productInfo.Images.Primary.Medium.URL,
-      isDeal: deal
-    }
-    
-    res.json({ ok: "1", err: "no err", response: [proudctRes] });
   }
 
 };
