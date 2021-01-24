@@ -126,6 +126,29 @@ exports.modify_profile = async (req, res) => {
     );
 };
 
+exports.get_userProfile = async (req, res) => {
+    const { authorization } = req.headers
+    const token = authorization.split('Bearer ')[1];
+    const decodedToken = await defaultAuth.verifyIdToken(token);
+    let uid = decodedToken.uid;
+
+
+    UserInfo.findOne({ 'user_id': uid },(err, user) => {
+        if (err) {
+            console.log(`ERROR POST/getUserProfile: ${err.code} - ${err.message}`);
+            res.send({ok: "-1", err: err.message, response: []});
+        }
+        let newProfile = {
+            user_id: uid,
+            profilePhoto: user.profilePhoto,
+            category_list: user.category_list
+        };
+        console.log(`POST/getUserProfile: found user ${uid}`);
+        res.json({ok: "1", err: "no err", response: newProfile});
+    });
+};
+
+
 exports.register_firebaseToken = async (req, res) => {
     const { authorization } = req.headers
     const token = authorization.split('Bearer ')[1];

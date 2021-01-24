@@ -29,6 +29,11 @@ module.exports = function (app) {
     .route("/profile/modify_profile")
     .post(auth.isAuthenticated, controller.modify_profile);
 
+  app
+    .route("/profile/get_user")
+    .post(auth.isAuthenticated, controller.get_userProfile);
+
+
   app.route("/auth/create_account").post(controller.add_account);
 
   app.route("/auth/create_google_account").post(controller.add_google_account);
