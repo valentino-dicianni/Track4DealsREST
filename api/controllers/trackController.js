@@ -121,7 +121,7 @@ exports.modify_profile = async (req, res) => {
                 res.send({ok: "-1", err: err.message, response: []});
             }
             console.log(`POST/modifyProfile: ${response.nModified} profile updated`);
-            res.json({ok: uid, err: "no err", response: []});
+            res.json({ok: uid, err: "no err", response: newProfile});
         }
     );
 };
