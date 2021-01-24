@@ -36,7 +36,7 @@ exports.get_tracking_offers = async (req, res) => {
                 console.log(`ERROR GET/trackingOffers: ${err.code} - ${err.message}`);
                 res.send({ok: "-1", err: err.message, response: []});
             }
-            console.log(`GET/trackingOffers: found ${list.length} products`);
+            console.log(`GET/trackingOffers: found ${list[0].tracking_list.length} products`);
             res.json({ok: "1", err: "no err", response: list[0].tracking_list});
         }
     );
