@@ -26,14 +26,15 @@ module.exports = function (app) {
     .post(auth.isAuthenticated, controller.remove_tracking_product);
 
   app
-    .route("/tracking/enable_notifications")
-    .get(controller.enable_notifications);
-
-  app
     .route("/profile/modify_profile")
     .post(auth.isAuthenticated, controller.modify_profile);
 
   app.route("/auth/create_account").post(controller.add_account);
 
   app.route("/auth/create_google_account").post(controller.add_google_account);
+
+  app
+    .route("/auth/register_firebaseToken")
+    .get(auth.isAuthenticated, controller.register_firebaseToken);
+
 };

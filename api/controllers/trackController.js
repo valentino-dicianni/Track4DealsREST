@@ -126,7 +126,7 @@ exports.modify_profile = async (req, res) => {
     );
 };
 
-exports.enable_notifications = async (req, res) => {
+exports.register_firebaseToken = async (req, res) => {
     const { authorization } = req.headers
     const token = authorization.split('Bearer ')[1];
     const decodedToken = await defaultAuth.verifyIdToken(token);
