@@ -157,12 +157,12 @@ exports.register_firebaseToken = async (req, res) => {
 
     Tracking.updateOne({ 'user_id': uid },
         { $set: { 'firebaseToken': req.body.firebaseToken } },
-        (err, res) => {
+        (err, result) => {
             if (err) {
                 console.log(`ERROR POST/enableNotification: ${err.code} - ${err.message}`);
                 res.send({ok: "-1", err: err.message, response: []});
             }
-            console.log(`POST/enableNotification: ${res.nModified} notification setting modified`);
+            console.log(`POST/enableNotification: ${result.nModified} notification setting modified`);
             res.json({ok: "1", err: "no err", response: []});
         }
     );
