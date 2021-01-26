@@ -40,6 +40,6 @@ module.exports = function (app) {
 
   app
     .route("/auth/register_firebaseToken")
-    .get(auth.isAuthenticated, controller.register_firebaseToken);
+    .post(auth.isAuthenticated, controller.register_firebaseToken);
 
 };

@@ -24,6 +24,7 @@
     "log-timestamp": "^0.3.0",
     "mongoose": "^5.9.1",
     "request": "^2.88.2",
+    "update": "^0.7.4",
     "winston": "^3.2.1"
   }
 }
