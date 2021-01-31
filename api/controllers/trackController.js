@@ -7,7 +7,7 @@ var mongoose = require('mongoose'),
     Tracking = mongoose.model('Tracking'),
     UserInfo = mongoose.model('UserInfo');
 
-exports.about_page = (req, res) =>{
+exports.about_page = (req, res) => {
     res.render('index.html');
 };
 
@@ -15,10 +15,10 @@ exports.get_all_offers = (req, res) => {
     Product.find({}, (err, products) => {
         if (err) {
             console.log(`ERROR GET/allOffers: ${err.code} - ${err.message}`);
-            res.send({ok: "-1", err: err.message, response: []});
+            res.send({ ok: "-1", err: err.message, response: [] });
         }
         console.log(`GET/allOffers: found ${products.length} products`);
-        res.json({ok: "1", err: "no err", response: products});
+        res.json({ ok: "1", err: "no err", response: products });
     });
 };
 
@@ -34,10 +34,10 @@ exports.get_tracking_offers = async (req, res) => {
         (err, list) => {
             if (err) {
                 console.log(`ERROR GET/trackingOffers: ${err.code} - ${err.message}`);
-                res.send({ok: "-1", err: err.message, response: []});
+                res.send({ ok: "-1", err: err.message, response: [] });
             }
             console.log(`GET/trackingOffers: found ${list[0].tracking_list.length} products`);
-            res.json({ok: "1", err: "no err", response: list[0].tracking_list});
+            res.json({ ok: "1", err: "no err", response: list[0].tracking_list });
         }
     );
 };
@@ -56,7 +56,7 @@ exports.add_tracking_product = async (req, res) => {
         (err, response) => {
             if (err) {
                 console.log(`ERROR POST/addTrackingProduct: ${err.code} - ${err.message}`);
-                res.send({ok: "-1", err: err.message, response: []});
+                res.send({ ok: "-1", err: err.message, response: [] });
             }
             console.log(`POST/addTrackingProduct: product collection updated`);
         }
@@ -68,11 +68,11 @@ exports.add_tracking_product = async (req, res) => {
         (err, response) => {
             if (err) {
                 console.log(`ERROR: ${err.code} - ${err.message}`);
-                res.send({ok: "-1", err: err.message, response: []});
+                res.send({ ok: "-1", err: err.message, response: [] });
             }
-            else{
+            else {
                 console.log(`POST/addTrackingProduct: updated ${response.nModified} product`);
-                res.json({ok: "1", err: "no err", response: [req.body]});
+                res.json({ ok: "1", err: "no err", response: [req.body] });
             }
         }
     );
@@ -90,13 +90,13 @@ exports.remove_tracking_product = async (req, res) => {
         (err, response) => {
             if (err) {
                 console.log(`ERROR: ${err.code} - ${err.message}`);
-                res.send({ok: "-1", err: err.message, response: []});
+                res.send({ ok: "-1", err: err.message, response: [] });
             }
-            else{
+            else {
                 console.log(`POST/removeTrackingProduct: updated ${response.nModified} product`);
-                res.json({ok: "1", err: "no err", response: [req.body]});
+                res.json({ ok: "1", err: "no err", response: [req.body] });
             }
-        }   
+        }
     );
 };
 
@@ -118,10 +118,10 @@ exports.modify_profile = async (req, res) => {
         (err, response) => {
             if (err) {
                 console.log(`ERROR POST/modifyProfile: ${err.code} - ${err.message}`);
-                res.send({ok: "-1", err: err.message, response: []});
+                res.send({ ok: "-1", err: err.message, response: [] });
             }
             console.log(`POST/modifyProfile: ${response.nModified} profile updated`);
-            res.json({ok: uid, err: "no err", response: newProfile});
+            res.json({ ok: uid, err: "no err", response: newProfile });
         }
     );
 };
@@ -133,10 +133,10 @@ exports.get_userProfile = async (req, res) => {
     let uid = decodedToken.uid;
 
 
-    UserInfo.findOne({ 'user_id': uid },(err, user) => {
+    UserInfo.findOne({ 'user_id': uid }, (err, user) => {
         if (err) {
             console.log(`ERROR POST/getUserProfile: ${err.code} - ${err.message}`);
-            res.send({ok: "-1", err: err.message, response: []});
+            res.send({ ok: "-1", err: err.message, response: [] });
         }
         let newProfile = {
             user_id: uid,
@@ -144,7 +144,7 @@ exports.get_userProfile = async (req, res) => {
             category_list: user.category_list
         };
         console.log(`POST/getUserProfile: found user ${uid}`);
-        res.json({ok: "1", err: "no err", response: newProfile});
+        res.json({ ok: "1", err: "no err", response: newProfile });
     });
 };
 
@@ -160,10 +160,10 @@ exports.register_firebaseToken = async (req, res) => {
         (err, result) => {
             if (err) {
                 console.log(`ERROR POST/enableNotification: ${err.code} - ${err.message}`);
-                res.send({ok: "-1", err: err.message, response: []});
+                res.send({ ok: "-1", err: err.message, response: [] });
             }
             console.log(`POST/enableNotification: ${result.nModified} notification setting modified`);
-            res.json({ok: "1", err: "no err", response: []});
+            res.json({ ok: "1", err: "no err", response: [] });
         }
     );
 };
@@ -175,17 +175,19 @@ exports.add_account = async (req, res) => {
         if (!displayName || !password || !email) {
             return res.status(400).send({ message: 'Missing fields' })
         }
-        const { uid } = await defaultAuth.createUser({
+        const firebaseResult = await defaultAuth.createUser({
             email: email,
             password: password,
             displayName: displayName
         });
+
+        let uid = firebaseResult.uid
         let newTrack = new Tracking({ 'user_id': uid, 'firebaseToken': "", 'tracking_list': [] })
         newTrack.save(
             (err, response) => {
                 if (err) {
                     console.log(`ERROR POST/addAccount: ${err.code} - ${err.message}`);
-                    res.send({ok: "-1", err: err.message, response: []});
+                    res.send({ ok: "-1", err: err.message, response: [] });
                 }
                 console.log(`POST/addAccount: tracking collection user added`);
             }
@@ -195,15 +197,15 @@ exports.add_account = async (req, res) => {
             (err, response) => {
                 if (err) {
                     console.log(`ERROR POST/addAccount: ${err.code} - ${err.message}`);
-                    res.send({ok: "-1", err: err.message, response: []});
+                    res.send({ ok: "-1", err: err.message, response: [] });
                 }
                 console.log(`POST/addAccount: userInfo collection user added`);
             })
 
-        res.status(201).send({ok: uid, err: "no err", response: []});
+        res.status(201).send({ ok: "1", err: "no err", response: [] });
     } catch (err) {
         console.log(`ERROR POST/addAccount: ${err.code} - ${err.message}`);
-        res.status(500).send({ok: "-1", err: err.message, response: []});
+        res.status(500).send({ ok: "-1", err: err.message, response: [] });
     }
 };
 
@@ -214,26 +216,29 @@ exports.add_google_account = async (req, res) => {
     if (!displayName || !password || !email || !uid) {
         return res.status(400).send({ message: 'Missing fields' })
     }
-
-    let newTrack = new Tracking({ 'user_id': uid, 'firebaseToken': "", 'tracking_list': [] })
-    newTrack.save(
-        (err, response) => {
-            if (err) {
-                console.log(`ERROR POST/addAccount: ${err.code} - ${err.message}`);
-                res.send({ok: "-1", err: err.message, response: []});
+    try {
+        let newTrack = new Tracking({ 'user_id': uid, 'firebaseToken': "", 'tracking_list': [] })
+        newTrack.save(
+            (err, response) => {
+                if (err) {
+                    console.log(`ERROR POST/addAccountG: ${err.code} - ${err.message}`);
+                    res.send({ ok: "-1", err: err.message, response: [] });
+                }
+                console.log(`POST/addAccountG: tracking collection user added`);
             }
-            console.log(`POST/addAccount: tracking collection user added`);
-        }
-    );
-    let newUser = new UserInfo({ok: uid, err: "no err", response: []});
-    newUser.save(
-        (err, response) => {
-            if (err) {
-                console.log(`ERROR POST/addAccount: ${err.code} - ${err.message}`);
-                res.send({ok: "-1", err: err.message, response: []});
-            }
-            console.log(`POST/addAccount: userInfo collection user added`);
-        })
-
-    res.status(201).send({ok: uid, err: "no err", response: []});
+        );
+        let newUser = new UserInfo({ ok: uid, err: "no err", response: [] });
+        newUser.save(
+            (err, response) => {
+                if (err) {
+                    console.log(`ERROR POST/addAccountG: ${err.code} - ${err.message}`);
+                    res.send({ ok: "-1", err: err.message, response: [] });
+                }
+                console.log(`POST/addAccountG: userInfo collection user added`);
+            })
+    } catch (err) {
+        console.log(`ERROR POST/addAccountG: ${err.code} - ${err.message}`);
+        res.status(500).send({ ok: "-1", err: err.message, response: [] });
+    }
+    res.status(201).send({ ok: "1", err: "no err", response: [] });
 };
