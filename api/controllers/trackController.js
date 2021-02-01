@@ -223,7 +223,7 @@ exports.add_google_account = async (req, res) => {
                 console.log(`POST/addAccountG: tracking collection user added`);
             }
         );
-        let newUser = new UserInfo({ ok: uid, err: "no err", response: [] });
+        let newUser = new UserInfo({ 'user_id': uid, 'profilePhoto': "", 'category_list': [] });
         newUser.save(
             (err, rs) => {
                 if (err) {
