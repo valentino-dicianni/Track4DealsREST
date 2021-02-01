@@ -184,7 +184,7 @@ exports.add_account = async (req, res) => {
         let uid = firebaseResult.uid
         let newTrack = new Tracking({ 'user_id': uid, 'firebaseToken': "", 'tracking_list': [] })
         newTrack.save(
-            (err, response) => {
+            (err, rs) => {
                 if (err) {
                     console.log(`ERROR POST/addAccount: ${err.code} - ${err.message}`);
                     res.send({ ok: "-1", err: err.message, response: [] });
@@ -194,7 +194,7 @@ exports.add_account = async (req, res) => {
         );
         let newUser = new UserInfo({ 'user_id': uid, 'profilePhoto': "", 'category_list': [] });
         newUser.save(
-            (err, response) => {
+            (err, rs) => {
                 if (err) {
                     console.log(`ERROR POST/addAccount: ${err.code} - ${err.message}`);
                     res.send({ ok: "-1", err: err.message, response: [] });
@@ -210,16 +210,12 @@ exports.add_account = async (req, res) => {
 };
 
 exports.add_google_account = async (req, res) => {
+    const { uid } = req.body
 
-    const { displayName, password, email, uid } = req.body
-
-    if (!displayName || !password || !email || !uid) {
-        return res.status(400).send({ message: 'Missing fields' })
-    }
     try {
         let newTrack = new Tracking({ 'user_id': uid, 'firebaseToken': "", 'tracking_list': [] })
         newTrack.save(
-            (err, response) => {
+            (err, rs) => {
                 if (err) {
                     console.log(`ERROR POST/addAccountG: ${err.code} - ${err.message}`);
                     res.send({ ok: "-1", err: err.message, response: [] });
@@ -229,7 +225,7 @@ exports.add_google_account = async (req, res) => {
         );
         let newUser = new UserInfo({ ok: uid, err: "no err", response: [] });
         newUser.save(
-            (err, response) => {
+            (err, rs) => {
                 if (err) {
                     console.log(`ERROR POST/addAccountG: ${err.code} - ${err.message}`);
                     res.send({ ok: "-1", err: err.message, response: [] });
