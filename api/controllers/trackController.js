@@ -159,10 +159,10 @@ exports.register_firebaseToken = async (req, res) => {
         { $set: { 'firebaseToken': req.body.firebaseToken } },
         (err, result) => {
             if (err) {
-                console.log(`ERROR POST/enableNotification: ${err.code} - ${err.message}`);
+                console.log(`ERROR POST/registerFirebaseToken: ${err.code} - ${err.message}`);
                 res.send({ ok: "-1", err: err.message, response: [] });
             }
-            console.log(`POST/enableNotification: ${result.nModified} notification setting modified`);
+            console.log(`POST/registerFirebaseToken: ${result.nModified} notification setting modified`);
             res.json({ ok: "1", err: "no err", response: [] });
         }
     );
@@ -213,8 +213,11 @@ exports.add_google_account = async (req, res) => {
     const { uid } = req.body
 
     try {
-        let newTrack = new Tracking({ 'user_id': uid, 'firebaseToken': "", 'tracking_list': [] })
-        newTrack.save(
+        let newTrack = { 'user_id': uid, 'firebaseToken': "", 'tracking_list': [] }
+        UserInfo.updateOne(
+            { 'user_id': uid },
+            { $set: newTrack },
+            { upsert: true },
             (err, rs) => {
                 if (err) {
                     console.log(`ERROR POST/addAccountG: ${err.code} - ${err.message}`);
@@ -223,8 +226,11 @@ exports.add_google_account = async (req, res) => {
                 console.log(`POST/addAccountG: tracking collection user added`);
             }
         );
-        let newUser = new UserInfo({ 'user_id': uid, 'profilePhoto': "", 'category_list': [] });
-        newUser.save(
+        let newUser = { 'user_id': uid, 'profilePhoto': "", 'category_list': [] }
+        UserInfo.updateOne(
+            { 'user_id': uid },
+            { $set: newUser },
+            { upsert: true },
             (err, rs) => {
                 if (err) {
                     console.log(`ERROR POST/addAccountG: ${err.code} - ${err.message}`);
