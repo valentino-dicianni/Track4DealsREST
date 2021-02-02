@@ -33,7 +33,7 @@ exports.verify_product = async (req, res) => {
   if (amazonRes != undefined) {
     try {
       let productInfo = amazonRes.data.ItemsResult.Items[0];
-      console.log(productInfo)
+      //console.log(productInfo)
       let nor_price;
       let off_price;
       let disc_perc;
@@ -66,6 +66,9 @@ exports.verify_product = async (req, res) => {
           isDeal: deal
         }
         res.json({ ok: "1", err: "no err", response: [proudctRes] });
+      } else {
+        console.log(`POST/verifyProduct: no available price`);
+        res.send({ ok: "-1", err: "No data available for that product", response: [] });
       }
     } catch (error) {
       console.log(`POST/verifyProduct: error with Amazon DB: ${error}`);
