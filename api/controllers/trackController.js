@@ -214,7 +214,7 @@ exports.add_google_account = async (req, res) => {
 
     try {
         let newTrack = { 'user_id': uid, 'firebaseToken': "", 'tracking_list': [] }
-        UserInfo.updateOne(
+        Tracking.updateOne(
             { 'user_id': uid },
             { $set: newTrack },
             { upsert: true },
