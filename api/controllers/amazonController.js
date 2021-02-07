@@ -38,7 +38,6 @@ exports.verify_product = async (req, res) => {
       let off_price;
       let disc_perc;
       let deal;
-      console.log(productInfo.Offers.Listings[0]);
       if (productInfo.Offers != undefined) {
         if (productInfo.Offers.Listings[0].Price.Savings != undefined) {
           nor_price = (productInfo.Offers.Listings[0].Price.Amount + productInfo.Offers.Listings[0].Price.Savings.Amount).toFixed(2);
