@@ -216,7 +216,7 @@ exports.add_google_account = async (req, res) => {
         let newTrack = { 'user_id': uid, 'firebaseToken': "", 'tracking_list': [] }
         Tracking.updateOne(
             { 'user_id': uid },
-            { $set: newTrack },
+            { $setOnInsert: newTrack },
             { upsert: true },
             (err, rs) => {
                 if (err) {
@@ -229,7 +229,7 @@ exports.add_google_account = async (req, res) => {
         let newUser = { 'user_id': uid, 'profilePhoto': "", 'category_list': [] }
         UserInfo.updateOne(
             { 'user_id': uid },
-            { $set: newUser },
+            { $setOnInsert: newUser },
             { upsert: true },
             (err, rs) => {
                 if (err) {
